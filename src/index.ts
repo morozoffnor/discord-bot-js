@@ -1,6 +1,7 @@
 import * as Discord from "discord.js";
 import * as Configfile from "./config";
 import { IBotCommand } from "./api";
+import * as fs from "fs";
 
 const client: Discord.Client = new Discord.Client();
 
@@ -21,6 +22,16 @@ client.on("ready", () => {
         });
     });
     console.log(" ");
+    console.log("Setting status");
+    changeStatus(client);
+
+     
+    var hourMillseconds = 1000 * 60 *60;
+    setInterval(function(){ 
+        changeStatus(client)
+    }, hourMillseconds)
+    
+    
     console.log("ready to go!");
     
     
@@ -76,6 +87,58 @@ function loadCommands(commandsPath: string) {
     }
 }
 
+function changeStatus(client: Discord.Client) {
+    let statusString = "";
+    let statusURL = "";
+    
+    fs.readFile('./content/statusString.txt', function (err, data) {
+        if (err)
+            throw err;
+        let statusArr = data.toString().split("\n");
+        let random = Math.floor((Math.random() * statusArr.length));
+        statusString = statusArr[random];
+        
+        let done1 = true;
+        if (done1) {
+            fs.readFile('./content/statusURL.txt', function (err, data) {
+                if (err)
+                    throw err;
+                let statusURLArr = data.toString().split("\n");
+                let random = Math.floor((Math.random() * statusURLArr.length));
+                statusURL = statusURLArr[random];
+                
+                let done2 = true;
+                if (done2) {
+                    let statusId = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+                    let statuses = ["PLAYING", "STREAMING", "LISTENING", "WATCHING"];
+                    if (statusId == 1) {
+                        client.user.setActivity(statusString, {
+                            type: "STREAMING",
+                            url: statusURL
+                        });
+                        
+                    } else {
+                        let done3 = true;
+                    if (done3) {
+                        client.user.setActivity(statusString, {
+                            type: statusId,
+                            url: statusURL
+                        });
+                        // need to fix this
+                        console.log(`Status has changed to ${statuses[statusId]}, ${statusString} with url: ${statusURL}`);
+                    }
+                    
+                    }
+                }
+            });
+        }
+    });
+}
 
+
+
+/*
+ 
+*/
 
 client.login(Configfile.config.token);

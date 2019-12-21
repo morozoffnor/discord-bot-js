@@ -5,7 +5,7 @@ export let config = {
         "dota",
         "ti",
         "gif",
-        "random",
+        "roll",
     ],
     "restricted": [
         "/midi/", 
