@@ -1,5 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 const Configfile = require("../config");
 const GphApiClient = require('giphy-js-sdk-core');
 const http = require('http');
