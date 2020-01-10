@@ -135,7 +135,7 @@ function changeStatus(client: Discord.Client) {
 // ========== Year progress daily post =============
 
 // Define year, and the current year etc.. math..
-const days = 365;
+const days = 366;
 
 // Calc one day
 const oneDay = 1000 * 60 * 60 * 24;
@@ -256,6 +256,8 @@ console.log('Current perc : ' + currentPerc);
 console.log('Testing the bar' + make_bar(currentPerc, bar_styles[0]) + ' ' + currentPerc.toFixed(2) + '%');
 
 // Cronjob for daily post
+
+let postPerc = [ 2, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 65, 69, 75, 80, 85, 90, 95, 96, 97, 98, 99, 100 ];
 new CronJob(
 	'0 0 * * *',
 	function() {
@@ -279,14 +281,25 @@ function postyearProgress(client: Discord.Client, currentPerc: number, bar_style
 	let randomemojiId = Math.floor(Math.random() * (emojis.length - 0)) + +0;
 	let emojismile = emojis[randomemojiId];
 
-	var bar = make_bar(currentPerc, bar_styles[0]) + '   ' + currentPerc.toFixed(2) + '% #YearProgress ' + emojismile;
+	let embedColor = Math.ceil(Math.floor(Math.random() * (16777213 - 0 + 1)) + 0);
+
+	var bar = make_bar(currentPerc, bar_styles[2]);
 
 	for (var i = 0; i <= Configfile.config.yearporgresswebhooks.length; i++) {
 		request.post(
 			Configfile.config.yearporgresswebhooks[i],
 			{
 				json: {
-					content: bar
+					embeds: [
+						{
+							title: `${currentPerc.toFixed(0)}% #YearProgress`,
+							color: embedColor,
+							description: `${bar}`,
+							footer: {
+								text: emojismile
+							}
+						}
+					]
 				}
 			},
 			(error: any, res: { statusCode: any }, body: any) => {
@@ -294,6 +307,7 @@ function postyearProgress(client: Discord.Client, currentPerc: number, bar_style
 					console.error(error);
 					return;
 				}
+				console.log("Posted Embed with '" + bar + "'");
 				console.log(`statusCode: ${res.statusCode}`);
 				console.log(body);
 			}
