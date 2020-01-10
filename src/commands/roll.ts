@@ -26,7 +26,7 @@ export default class random implements IBotCommand {
 		let stringNumber = msgObject.content.split(' ').slice(1);
 		let number = Number(stringNumber);
 
-		let min = Math.ceil(0);
+		let min = Math.ceil(1);
 		let maxi = Math.floor(number);
 		let namber = Math.floor(Math.random() * (maxi - min + 1)) + min;
 		console.log('generating number');
