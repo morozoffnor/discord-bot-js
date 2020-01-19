@@ -1,3 +1,6 @@
+**This is outdated and needs to be rewritten**
+
+
 # Simple Discord bot
 
 This bot was created solely for fun and should not be shown to anyone at all.
