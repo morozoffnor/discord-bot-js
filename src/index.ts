@@ -27,7 +27,7 @@ client.on('ready', () => {
 	changeStatus(client);
 
 	var hourMillseconds = 1000 * 60 * 60;
-	setInterval(function() {
+	setInterval(function () {
 		changeStatus(client);
 	}, hourMillseconds);
 
@@ -90,7 +90,7 @@ function changeStatus(client: Discord.Client) {
 	let statusString = '';
 	let statusURL = '';
 
-	fs.readFile('./content/statusString.txt', function(err, data) {
+	fs.readFile('./content/statusString.txt', function (err, data) {
 		if (err) throw err;
 		let statusArr = data.toString().split('\n');
 		let random = Math.floor(Math.random() * statusArr.length);
@@ -98,7 +98,7 @@ function changeStatus(client: Discord.Client) {
 
 		let done1 = true;
 		if (done1) {
-			fs.readFile('./content/statusURL.txt', function(err, data) {
+			fs.readFile('./content/statusURL.txt', function (err, data) {
 				if (err) throw err;
 				let statusURLArr = data.toString().split('\n');
 				let random = Math.floor(Math.random() * statusURLArr.length);
@@ -107,7 +107,7 @@ function changeStatus(client: Discord.Client) {
 				let done2 = true;
 				if (done2) {
 					let statusId = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
-					let statuses = [ 'PLAYING', 'STREAMING', 'LISTENING', 'WATCHING' ];
+					let statuses = ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'];
 					if (statusId == 1) {
 						client.user.setActivity(statusString, {
 							type: 'STREAMING',
@@ -257,10 +257,10 @@ console.log('Testing the bar' + make_bar(currentPerc, bar_styles[0]) + ' ' + cur
 
 // Cronjob for daily post
 
-let postPerc = [ 2, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 65, 69, 75, 80, 85, 90, 95, 96, 97, 98, 99, 100 ];
+let postPerc = [2, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 65, 69, 75, 80, 85, 90, 95, 96, 97, 98, 99, 100];
 new CronJob(
 	'0 0 * * *',
-	function() {
+	function () {
 		YearProgressEveryDay();
 		postyearProgress(client, currentPerc, bar_styles);
 	},
@@ -336,7 +336,6 @@ function make_bar(perc: number, bar_style: string | any[]) {
 		n = bar_style.length - 1;
 	if (p == 100) return repeat(full_symbol, 10);
 	p = p / 100;
-
 	for (var i = 25; i >= 1; i--) {
 		x = p * i;
 		full = Math.floor(x);
