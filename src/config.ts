@@ -1,7 +1,7 @@
 export let config = {
-	token: 'your_token_here',
+	token: 'token',
 	prefix: '!',
-	commands: [ 'dota', 'ti', 'roll', 'yearprogress', 'emoji', 'lock', 'unlock', 'story' ],
-	restricted: [ '/midi/' ],
-	yearporgresswebhooks: [ 'webhook_link_1', 'webhook_link_2' ]
+	commands: ['dota', 'ti', 'roll', 'pick', 'yearprogress', 'emoji', 'lock', 'unlock', 'story'],
+	restricted: ['/midi/'],
+	yearporgresswebhooks: ['webhook_1', 'webhook_2']
 };

@@ -2,10 +2,22 @@ import * as Discord from 'discord.js';
 import * as Configfile from './config';
 import { IBotCommand } from './api';
 import * as fs from 'fs';
+import yearprogress from './commands/yearprogress';
 
 const client: Discord.Client = new Discord.Client();
 const CronJob = require('cron').CronJob;
 const request = require('request');
+const admin = require('firebase-admin');
+
+let serviceAccount = require('./firm-region-265513-5b75315c82b8.json');
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount)
+});
+
+let db = admin.firestore();
+
+
 
 let commands: IBotCommand[] = [];
 
@@ -255,19 +267,59 @@ console.log('Current day : ' + currentDay);
 console.log('Current perc : ' + currentPerc);
 console.log('Testing the bar' + make_bar(currentPerc, bar_styles[0]) + ' ' + currentPerc.toFixed(2) + '%');
 
-// Cronjob for daily post
-
-let postPerc = [2, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 65, 69, 75, 80, 85, 90, 95, 96, 97, 98, 99, 100];
 new CronJob(
 	'0 0 * * *',
 	function () {
 		YearProgressEveryDay();
-		postyearProgress(client, currentPerc, bar_styles);
+		checkPercDiff();
 	},
 	null,
 	true,
 	'UTC'
 );
+
+function checkPercDiff() {
+
+	let docRef = db.collection('Govnoed').doc(`s9cZGhjxKyOEsTQncDfW`);
+	let getDoc = docRef.get()
+		.then((doc: { exists: any; data: () => any; }) => {
+			if (!doc.exists) {
+				console.log('No such document!');
+			} else {
+				console.log('- - - Starting yeaprogress cron thing')
+				console.log('Checking Google Firestore for last perc... Document data:', doc.data());
+				let lastPercJson = doc.data();
+				console.log(lastPercJson);
+				let lastPerc = lastPercJson['yearprogressperc']
+				let percs = [1, 2, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 80, 90, 95, 98, 99, 100];
+
+				let cPerc = 1;
+				cPerc = parseInt(currentPerc.toFixed())
+
+				if (lastPerc == cPerc) {
+					return
+				} else {
+					for (let i = 0; i < percs.length; i++) {
+						if (percs[i] == cPerc) {
+							console.log('- - Everything is fine. Executing post function...')
+							postyearProgress(client, currentPerc, bar_styles);
+							console.log('- - Updating document on Google Firestore...')
+							docRef.update({ yearprogressperc: cPerc });
+							console.log('- - - Done!')
+							break
+						}
+					}
+				}
+			}
+		})
+		.catch((err: any) => {
+			console.log('Error getting document', err);
+		});
+
+
+
+
+}
 
 function YearProgressEveryDay() {
 	now = new Date();
