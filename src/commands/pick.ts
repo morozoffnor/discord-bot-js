@@ -1,5 +1,6 @@
 import * as Discord from 'discord.js';
 import { IBotCommand } from '../api';
+import * as fs from 'fs';
 
 export default class pick implements IBotCommand {
     private readonly _command = 'pick';
@@ -28,7 +29,29 @@ export default class pick implements IBotCommand {
             msgObject.channel.send(choice);
         }
 
-        sendChoice(choice, msgObject);
+
+
+
+        if (choices.length < 1) {
+            fs.readFile('content/pidor.txt', function (err, data) {
+                if (err) throw err;
+                let tiArr = data.toString().split('\n');
+                let random = Math.floor(Math.random() * tiArr.length);
+                let randomPidor = tiArr[random];
+                msgObject.channel.send('Мне не из чего выбирать, ' + randomPidor)
+            });
+        } else if (choices.length == 1) {
+            fs.readFile('content/pidor.txt', function (err, data) {
+                if (err) throw err;
+                let tiArr = data.toString().split('\n');
+                let random = Math.floor(Math.random() * tiArr.length);
+                let randomPidor = tiArr[random];
+                msgObject.channel.send('Я вижу тут только один вариант. И как ты думаешь, что я выберу, ' + randomPidor + '?')
+            });
+        } else {
+            sendChoice(choice, msgObject);
+        }
+
 
     }
 }
