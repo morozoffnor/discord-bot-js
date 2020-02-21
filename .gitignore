@@ -27,6 +27,6 @@ yarn-error.log*
 
 json.sqlite
 
-content\firm-region-265513-5b75315c82b8.json
-src\firm-region-265513-5b75315c82b8.json
-dist\firm-region-265513-5b75315c82b8.json
+content/firm-region-265513-5b75315c82b8.json
+dist/firm-region-265513-5b75315c82b8.json
+src/firm-region-265513-5b75315c82b8.json
