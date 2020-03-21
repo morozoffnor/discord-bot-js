@@ -407,3 +407,5 @@ function make_bar(perc: number, bar_style: string | any[]) {
 }
 
 client.login(Configfile.config.token);
+
+export default db
