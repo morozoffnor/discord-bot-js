@@ -54,7 +54,8 @@ export default class story implements IBotCommand {
 				console.log(error);
 			}
 
-			await msgObject.channel.send(answer);
+			await msgObject.channel.send(answer)
+				.then((msg) => { (msg as Discord.Message).delete(5000); })
 		};
 
 		if (args[0] === 'help') {
